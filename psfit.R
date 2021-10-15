@@ -1,3 +1,9 @@
+##########################
+# AUTHOR: DARLIN SOTO    #
+# DATE: OCTOBER 15, 2021 #
+# EMAIL: dmsoto1@uc.cl   #
+##########################
+
 psfit3 <- function(x,xl,xr,y,w1,K,pord,ndx,bdeg,lam){
   
   #B-spline
