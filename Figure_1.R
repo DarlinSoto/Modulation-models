@@ -25,7 +25,7 @@ Y = fX + z
 
 
 #PARAMETERS B-SPLINE
-num_nodos=10
+num_knots=10
 pordd=1
 tau=seq(0,200,by=5)
 tau_length=length(tau)
@@ -40,7 +40,7 @@ Y_hat=matrix(0,ncol=tau_length,nrow=n)
 for(l in 1:length(tau)){
   
   fit=psfit3(x=x,xl=min(x)-0.0000001,xr=max(x)+0.0000001,y=Y,w1=w,K=1,pord=pordd,
-             ndx=num_nodos,bdeg=3,lam=c(tau[l],tau[l],tau[l]))
+             ndx=num_knots,bdeg=3,lam=c(tau[l],tau[l],tau[l]))
   
   AIC[l]=fit$AIC
   Y_hat[,l]=fit$f.hat
