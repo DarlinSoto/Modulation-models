@@ -11,9 +11,24 @@ library(Matrix)
 
 
 #READ SIMULATED BLAZHKO STAR
-Blazhko_sim=read.table("Blazhko_sim.txt",header=TRUE, sep = ",")
+Blazhko_sim=read.table("Blazhko_sim.txt",header=TRUE, sep = " ")
 Y_t=Blazhko_sim[,1]
-t=Blazhko_sim[,2]
+mu=Blazhko_sim[,2]
+t=Blazhko_sim[,3]
+mm=Blazhko_sim[,4]
+g11=Blazhko_sim[,5]
+g21=Blazhko_sim[,6]
+g12=Blazhko_sim[,7]
+g22=Blazhko_sim[,8]
+g13=Blazhko_sim[,9]
+g23=Blazhko_sim[,10]
+g14=Blazhko_sim[,11]
+g24=Blazhko_sim[,12]
+K=4
+j=1:K
+w=2*pi*j*f0
+f0=2
+
 
 
 #FIT
@@ -75,7 +90,7 @@ lines(t,f_hat+1.96*sd,t='l',lty=2,col=1)
 lines(t,f_hat-1.96*sd,t='l',lty=2,col=1)
 rug(t,col='grey')
 title(sub="Time", adj=0.5, line=0.5, font=2)
-title(ylab=bquote(paste('Y, ', mu, ' and ', hat(Y))), line=2, font=2)
+title(ylab=bquote(paste('y, ', mu, ' and ', hat(y))), line=2, font=2)
 
 par(mar = c(3, 3.5, 0.5, 0))
 plot(t,resid,t='l',ylim=c(min(resid),max(resid)),xlab='',ylab='',xaxt='none')
