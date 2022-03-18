@@ -4,7 +4,7 @@
 # EMAIL: dmsoto1@uc.cl   #
 ##########################
 
-psfit3 <- function(x,xl,xr,y,w1,K,pord,ndx,bdeg,lam){
+psfit <- function(x,xl,xr,y,w1,K,pord,ndx,bdeg,lam){
   
   #B-spline
   n <- length(y)
