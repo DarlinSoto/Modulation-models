@@ -69,7 +69,7 @@ lines(x_WN,Y_hat_WN[,1],col="orange",lty=2)
 lines(x_WN,Y_hat_WN[,which.min(AIC_WN)],col="blue",lty=2)
 lines(x_WN,Y_hat_WN[,length(tau_WN)],col="green",lty=2)
 title(sub="Time", adj=0.5, line=2, font=2)
-title(ylab=bquote(paste('Y, ', mu, ' and ', hat(Y))), line=2, font=2)
+title(ylab=bquote(paste('y, ', mu, ' and ', hat(y))), line=2, font=2)
 legend("topright", 
        legend=c((expression(paste(tau," = 0"))),(expression(paste(tau," = 30"))),(expression(paste(tau," = 200")))),
        col=c("orange","blue","green"), lty=2, cex=1)
