@@ -197,7 +197,7 @@ getPred <- function(gamma_int, tim){
 
 # residual function
 residFun <- function(p, observed, tim) observed - getPred(p,tim)
-
+library(minpack.lm)
 #FIT
 nls.out_AM_FM_2018 <- nls.lm(par=gamma_int, fn = residFun, observed = Y,tim = t)
 
@@ -250,7 +250,7 @@ lam_aux=c(AIC_tot[2],rep(AIC_tot[3],10),rep(AIC_tot[4],10),rep(AIC_tot[5],10),re
 knots=AIC_tot[1]
 
 
-fit=psfit3(x=t,xl=min(t)-0.00001,xr=max(t)+0.00001,y=Y,w1=w_hat,K=K,pord=p,ndx=knots,bdeg=bdeg,lam=lam_aux)
+fit=psfit(x=t,xl=min(t)-0.00001,xr=max(t)+0.00001,y=Y,w1=w_hat,K=K,pord=p,ndx=knots,bdeg=bdeg,lam=lam_aux)
 
 Y_hat_Bspline=fit$f.hat
 res_Bspline=Y-Y_hat_Bspline
@@ -318,85 +318,89 @@ pdf("V783_fit_Y.pdf", width=15, height=11)
 layout(matrix(1:8, 4,2, byrow = FALSE),widths=c(1,1), heights=c(1,1))
 
 #OUT MODEL
+in1=3
+in2=4
+in3=1
+in4=1
 
-par(mar = c(3, 3.5, 1, 1))
+par(mar = c(in1,in2,in3,in4))
 minn_y=min(Y)-0.2
 maxx_y=max(Y)+0.1
 plot(t,Y,ylim=c(maxx_y,minn_y),t='l',lwd=2,col=2,ylab='',xlab='',xaxt='none')
 lines(t,Y_hat_Bspline, col=1, lwd=1)
 rug(t,col='grey')
 title(sub='Time [BJD-2454833 d]', adj=0.5, line=0.5, font=2)
-title(ylab='Brightness [mag]', line=2, font=2)
-text(min(t)+(max(t)-min(t))/2,minn_y+0.03,cex=1.3,bquote('Fit obtained with time-varying parameters (our novel model)'))
+title(ylab='Brightness [mag]', line=2, font=2, cex.lab=1.3)
+text(min(t)+(max(t)-min(t))/2,minn_y+0.03,cex=1.5,bquote('Fit obtained with time-varying parameters (our novel model)'))
 legend("topright", legend=c('Observations','Fit'),col=c(2,"black"), lty=c(1,1), cex=1)
 
-par(mar = c(3, 3.5, 1, 1))
+par(mar = c(in1,in2,in3,in4))
 minn_res=min(res_AM_FM_2018,res_Bspline)
 maxx_res=max(res_AM_FM_2018,res_Bspline)
 plot(t,res_Bspline,ylim=c(maxx_res,minn_res),t='l',ylab='',xlab='')
 rug(t,col='grey')
 title(sub='Time [BJD-2454833 d]', adj=0.5, line=2, font=2)
-title(ylab='Resdiduals [mag]', line=2, font=2)
+title(ylab='Resdiduals [mag]', line=2, font=2, cex.lab=1.3)
 text(min(t)+(max(t)-min(t))/2,minn_res+0.001,cex=1.3,bquote('Residual of fit obtained with time-varying parameters (our novel model)'))
 
 maxx=max(log10(c(P_res_AM_FM_2018[ind],P_res_Bspline[ind])))+0.2
 minn=min(log10(c(P_res_AM_FM_2018[ind],P_res_Bspline[ind])))
 
-par(mar = c(3, 3.5, 1, 1))
+par(mar = c(in1,in2,in3,in4))
 plot(log10(lam_l[ind]/(2*pi)),log10(P_res_Bspline[ind]),t='l',ylim=c(minn,maxx),
      xlab='',ylab='')
 text(-0.15,maxx-0.2,cex=1.3,expression("log10 of estimated PSD of the residuals obtained with time-varying parameters (our novel model)"))
 title(sub=bquote(paste('log10 of frequency [log10 ',d^{-1},']' )), adj=0.5, line=2.0, font=2)
-title(ylab=bquote(paste('log10 of ',hat(PSD))), line=2, font=2)
+title(ylab=bquote(paste('log10 of ',hat(PSD))), line=2, font=2, cex.lab=1.3)
 
 maxx=max(sqrt(c(P_res_AM_FM_2018[ind],P_res_Bspline[ind])))+0.0008
 minn=min(sqrt(c(P_res_AM_FM_2018[ind],P_res_Bspline[ind])))
 
-par(mar = c(3, 3.5, 1, 1))
+par(mar = c(in1,in2,in3,in4))
 plot(lam_l[ind]/(2*pi),sqrt(P_res_Bspline[ind]),t='l',ylim=c(minn,maxx),xlab='',ylab='')
 text(max(lam_l[ind]/(2*pi))/2,maxx-0.0003,cex=1.3,expression("Square root of estimated PSD of the residuals obtained with time-varying parameters (our novel model)"))
 title(sub=bquote(paste('Frequency [',d^{-1},']' )), adj=0.5, line=2.0, font=2)
-title(ylab=bquote(sqrt(hat(PSD))), line=2, font=2)
+title(ylab=bquote(sqrt(hat(PSD))), line=2, font=2, cex.lab=1.3)
 
 
 #BENKO MODEL
 
-par(mar = c(3, 3.5, 1, 1))
+par(mar = c(in1,in2,in3,in4))
 plot(t,Y,ylim=c(maxx_y,minn_y),t='l',lwd=2,col=2,ylab='',xlab='',xaxt='none',yaxt='none')
 lines(t,Y_hat_AM_FM_2018, col=1, lwd=1)
 rug(t,col='grey')
 title(sub='Time [BJD-2454833 d]', adj=0.5, line=0.5, font=2)
-title(ylab='Brightness [mag]', line=1, font=2)
-text(min(t)+(max(t)-min(t))/2,minn_y+0.03,cex=1.3,expression(paste('Fit obtained with time-invariant parameters (Benk',"\u00f6",' 2018)')))
+title(ylab='Brightness [mag]', line=1, font=2, cex.lab=1.3)
+text(min(t)+(max(t)-min(t))/2,minn_y+0.03,cex=1.5,expression(paste('Fit obtained with time-invariant parameters (Benk',"\u00f6",' 2018)')))
 #bquote('Fit obtained with Model 1'))
 legend("topright", legend=c('Observations','Fit'),col=c(2,"black"), lty=c(1,1), cex=1)
 
-par(mar = c(3, 3.5, 1, 1))
+par(mar = c(in1,in2,in3,in4))
 plot(t,res_AM_FM_2018,ylim=c(maxx_res,minn_res),t='l',ylab='',xlab='',yaxt='none')
 rug(t,col='grey')
 title(sub='Time [BJD-2454833 d]', adj=0.5, line=2, font=2)
-title(ylab='Resdiduals [mag]', line=1, font=2)
+title(ylab='Resdiduals [mag]', line=1, font=2, cex.lab=1.3)
 text(min(t)+(max(t)-min(t))/2,minn_res+0.001,cex=1.3,bquote('Residual of fit obtained with time-invariant parameters'))
 
 maxx=max(log10(c(P_res_AM_FM_2018[ind],P_res_Bspline[ind])))+0.2
 minn=min(log10(c(P_res_AM_FM_2018[ind],P_res_Bspline[ind])))
 
-par(mar = c(3, 3.5, 1, 1))
+par(mar = c(in1,in2,in3,in4))
 plot(log10(lam_l[ind]/(2*pi)),log10(P_res_AM_FM_2018[ind]),t='l',ylim=c(minn,maxx),
      xlab='',ylab='',yaxt='none')
 text(-0.15,maxx-0.2,cex=1.3,expression("log10 of estimated PSD of the residuals obtained with time-invariant parameters"))
 title(sub=bquote(paste('log10 of frequency [log10 ',d^{-1},']' )), adj=0.5, line=2.0, font=2)
-title(ylab=bquote(paste('log10 of ',hat(PSD))), line=1, font=2)
+title(ylab=bquote(paste('log10 of ',hat(PSD))), line=1, font=2, cex.lab=1.3)
 
 
 maxx=max(sqrt(c(P_res_AM_FM_2018[ind],P_res_Bspline[ind])))+0.0008
 minn=min(sqrt(c(P_res_AM_FM_2018[ind],P_res_Bspline[ind])))
 
-par(mar = c(3, 3.5, 1, 1))
+par(mar = c(in1,in2,in3,in4))
 plot(lam_l[ind]/(2*pi),sqrt(P_res_AM_FM_2018[ind]),t='l',ylim=c(minn,maxx),xlab='',ylab='',yaxt='none')
 text(max(lam_l[ind]/(2*pi))/2,maxx-0.0003,cex=1.3,expression("Square root of estimated PSD of the residuals obtained with time-invariant parameters"))
 title(sub=bquote(paste('Frequency [',d^{-1},']' )), adj=0.5, line=2.0, font=2)
-title(ylab=bquote(sqrt(hat(PSD))), line=1, font=2)
+title(ylab=bquote(sqrt(hat(PSD))), line=1, font=2, cex.lab=1.3)
 text(x=new_freqs[1],y=0.0001,labels = bquote(paste("f"[11])))
 text(x=new_freqs[1],y=0.0002,labels = bquote(paste("'")))
 axis(1, at=new_freqs[1],labels = FALSE, las=1,pos=-0.0003)
@@ -430,7 +434,7 @@ lines(t,m_hat-1.96*m_sen,lty=2)
 lines(t,m_b,col=2)
 rug(t,col='grey')
 title(sub="BJD-2450000 [d]", adj=0.5, line=2, font=2)
-title(ylab=bquote(paste(hat(m),' and ',hat(u))), line=(nline+1.5), font=2)
+title(ylab=bquote(paste(hat(m),' and ',hat(u))), line=(nline+1.5), font=2, cex.lab=1.3)
 
 
 for(i in c(1,4,7,10,13)){
@@ -444,7 +448,7 @@ for(i in c(1,4,7,10,13)){
   rug(t,col='grey')
   assay <- as.character(i)
   title(sub="BJD-2450000 [d]", adj=0.5, line=0.5, font=2)
-  title(ylab=bquote(paste(hat(g)[1*','*~.(assay)],' and ',hat(h)[1*','*~.(assay)])), line=(nline+1.5), font=2)
+  title(ylab=bquote(paste(hat(g)[1*','*~.(assay)],' and ',hat(h)[1*','*~.(assay)])), line=(nline+1.5), font=2, cex.lab=1.3)
   
   par(mar = c(3, 3.7, 0.6, 0))
   maxx=max(cbind(g1_hat[index,i+1]+1.96*g1_sen[index,i+1],g1_hat[index,i+1]-1.96*g1_sen[index,i+1],g1_b[index,i+1]))
@@ -468,7 +472,7 @@ for(i in c(1,4,7,10,13)){
   rug(t,col='grey')
   assay <- as.character(i+2)
   title(sub="BJD-2450000 [d]", adj=0.5, line=0.5, font=2)
-  title(ylab=bquote(paste(hat(g)[1*','*~.(assay)],' and ',hat(h)[1*','*~.(assay)])), line=nline, font=2)
+  title(ylab=bquote(paste(hat(g)[1*','*~.(assay)],' and ',hat(h)[1*','*~.(assay)])), line=nline, font=2, cex.lab=1.3)
   
 
   par(mar = c(3, 3.7, 0.6, 0))
@@ -481,7 +485,7 @@ for(i in c(1,4,7,10,13)){
   rug(t,col='grey')
   assay <- as.character(i)
   title(sub="BJD-2450000 [d]", adj=0.5, line=0.5, font=2)
-  title(ylab=bquote(paste(hat(g)[2*','*~.(assay)],' and ',hat(h)[2*','*~.(assay)])), line=nline, font=2)
+  title(ylab=bquote(paste(hat(g)[2*','*~.(assay)],' and ',hat(h)[2*','*~.(assay)])), line=nline, font=2, cex.lab=1.3)
   
   par(mar = c(3, 3.7, 0.6, 0))
   maxx=max(cbind(g2_hat[index,i+1]+1.96*g2_sen[index,i+1],g2_hat[index,i+1]-1.96*g2_sen[index,i+1],g2_b[index,i+1]))
@@ -493,7 +497,7 @@ for(i in c(1,4,7,10,13)){
   rug(t,col='grey')
   assay <- as.character(i+1)
   title(sub="BJD-2450000 [d]", adj=0.5, line=0.5, font=2)
-  title(ylab=bquote(paste(hat(g)[2*','*~.(assay)],' and ',hat(h)[2*','*~.(assay)])), line=nline, font=2)
+  title(ylab=bquote(paste(hat(g)[2*','*~.(assay)],' and ',hat(h)[2*','*~.(assay)])), line=nline, font=2, cex.lab=1.3)
   
   par(mar = c(3, 3.7, 0.6, 0))
   maxx=max(cbind(g2_hat[index,i+2]+1.96*g2_sen[index,i+2],g2_hat[index,i+2]-1.96*g2_sen[index,i+2],g2_b[index,i+2]))
@@ -505,7 +509,7 @@ for(i in c(1,4,7,10,13)){
   rug(t,col='grey')
   assay <- as.character(i+2)
   title(sub="BJD-2450000 [d]", adj=0.5, line=0.5, font=2)
-  title(ylab=bquote(paste(hat(g)[2*','*~.(assay)],' and ',hat(h)[2*','*~.(assay)])), line=nline, font=2)
+  title(ylab=bquote(paste(hat(g)[2*','*~.(assay)],' and ',hat(h)[2*','*~.(assay)])), line=nline, font=2, cex.lab=1.3)
 
 }
 
@@ -520,7 +524,7 @@ lines(t,g1_hat[,i]-1.96*g1_sen[,i],lty=2)
 rug(t,col='grey')
 assay <- as.character(i)
 title(sub="BJD-2450000 [d]", adj=0.5, line=2, font=2)
-title(ylab=bquote(paste(hat(g)," '"[1*','*~.(assay)])), line=(nline+1.5), font=2)
+title(ylab=bquote(paste(hat(g)," '"[1*','*~.(assay)])), line=(nline+1.5), font=2, cex.lab=1.3)
 
 
 par(mar = c(3, 3.7, 0.6, 0))
@@ -532,7 +536,7 @@ lines(t,g1_hat[,i+1]-1.96*g1_sen[,i+1],lty=2)
 rug(t,col='grey')
 assay <- as.character(i+1)
 title(sub="BJD-2450000 [d]", adj=0.5, line=2, font=2)
-title(ylab=bquote(paste(hat(g)," '"[1*','*~.(assay)])), line=(nline), font=2)
+title(ylab=bquote(paste(hat(g)," '"[1*','*~.(assay)])), line=(nline), font=2, cex.lab=1.3)
 
 par(mar = c(3, 3.7, 0.6, 0))
 maxx=max(cbind(g1_hat[index,i+2]+1.96*g1_sen[index,i+2],g1_hat[index,i+2]-1.96*g1_sen[index,i+2]))
@@ -543,7 +547,7 @@ lines(t,g1_hat[,i+2]-1.96*g1_sen[,i+2],lty=2)
 rug(t,col='grey')
 assay <- as.character(i+2)
 title(sub="BJD-2450000 [d]", adj=0.5, line=2, font=2)
-title(ylab=bquote(paste(hat(g)," '"[1*','*~.(assay)])), line=(nline), font=2)
+title(ylab=bquote(paste(hat(g)," '"[1*','*~.(assay)])), line=(nline), font=2, cex.lab=1.3)
 
 par(mar = c(3, 3.7, 0.6, 0))
 maxx=max(cbind(g2_hat[index,i]+1.96*g2_sen[index,i],g2_hat[index,i]-1.96*g2_sen[index,i]))
@@ -554,7 +558,7 @@ lines(t,g2_hat[,i]-1.96*g2_sen[,i],lty=2)
 rug(t,col='grey')
 assay <- as.character(i)
 title(sub="BJD-2450000 [d]", adj=0.5, line=2, font=2)
-title(ylab=bquote(paste(hat(g)," '"[2*','*~.(assay)])), line=(nline), font=2)
+title(ylab=bquote(paste(hat(g)," '"[2*','*~.(assay)])), line=(nline), font=2, cex.lab=1.3)
 
 par(mar = c(3, 3.7, 0.6, 0))
 maxx=max(cbind(g2_hat[index,i+1]+1.96*g2_sen[index,i+1],g2_hat[index,i+1]-1.96*g2_sen[index,i+1]))
@@ -565,7 +569,7 @@ lines(t,g2_hat[,i+1]-1.96*g2_sen[,i+1],lty=2)
 rug(t,col='grey')
 assay <- as.character(i+1)
 title(sub="BJD-2450000 [d]", adj=0.5, line=2, font=2)
-title(ylab=bquote(paste(hat(g)," '"[2*','*~.(assay)])), line=(nline), font=2)
+title(ylab=bquote(paste(hat(g)," '"[2*','*~.(assay)])), line=(nline), font=2, cex.lab=1.3)
 
 par(mar = c(3, 3.7, 0.6, 0))
 maxx=max(cbind(g2_hat[index,i+2]+1.96*g2_sen[index,i+2],g2_hat[index,i+2]-1.96*g2_sen[index,i+2]))
@@ -576,7 +580,7 @@ lines(t,g2_hat[,i+2]-1.96*g2_sen[,i+2],lty=2)
 rug(t,col='grey')
 assay <- as.character(i+2)
 title(sub="BJD-2450000 [d]", adj=0.5, line=2, font=2)
-title(ylab=bquote(paste(hat(g)," '"[2*','*~.(assay)])), line=(nline), font=2)
+title(ylab=bquote(paste(hat(g)," '"[2*','*~.(assay)])), line=(nline), font=2, cex.lab=1.3)
 
 i=14
 
@@ -589,7 +593,7 @@ lines(t,g1_hat[,i]-1.96*g1_sen[,i],lty=2)
 rug(t,col='grey')
 assay <- as.character(i)
 title(sub="BJD-2450000 [d]", adj=0.5, line=2, font=2)
-title(ylab=bquote(paste(hat(g)," '"[1*','*~.(assay)])), line=(nline+1.5), font=2)
+title(ylab=bquote(paste(hat(g)," '"[1*','*~.(assay)])), line=(nline+1.5), font=2, cex.lab=1.3)
 
 par(mar = c(3, 3.7, 0.6, 0))
 plot.new()
@@ -605,7 +609,7 @@ lines(t,g2_hat[,i]-1.96*g2_sen[,i],lty=2)
 rug(t,col='grey')
 assay <- as.character(i)
 title(sub="BJD-2450000 [d]", adj=0.5, line=2, font=2)
-title(ylab=bquote(paste(hat(g)," '"[2*','*~.(assay)])), line=(nline), font=2)
+title(ylab=bquote(paste(hat(g)," '"[2*','*~.(assay)])), line=(nline), font=2, cex.lab=1.3)
 
 par(mar = c(3, 3.7, 0.6, 0))
 plot.new()
