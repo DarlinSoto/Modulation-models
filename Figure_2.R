@@ -286,23 +286,23 @@ par(mar = c(2,4,2,0.3))
 maxx=max(mu_AR0_K2_SIN_CI_Sup_1)
 minn=min(mu_AR0_K2_SIN_CI_Inf_1)
 plot(x,mu_AR0_K2_SIN_true,col=2,lwd=1,ylim=c(minn,maxx),type="l",xlab="",ylab="",xaxt="none",
-     main='Model with sinusoidal trend and amplitudes')
+     main='Model with sinusoidal trend and amplitudes',cex.main=1.7)
 lines(x,mu_AR0_K2_SIN_esti,col=1,lwd=0.5,type="l")
 lines(x,mu_AR0_K2_SIN_CI_Inf_1,col=1,lty=2)
 lines(x,mu_AR0_K2_SIN_CI_Sup_1,col=1,lty=2)
 rug(x,col='grey')
 title(sub="Time", adj=0.5, line=0.5, font=2)
-title(ylab=bquote(mu*' and '* bar(mu)), line=2, font=2)
+title(ylab=bquote(mu*' and '* bar(mu)), line=2, font=3, cex.lab=1.4)
 
 par(mar = c(2,4,2,0.3))
 plot(x,mu_AR0_K2_POL_true,col=2,lwd=1,ylim=c(minn,maxx),type="l",xlab="",ylab="",xaxt="none",yaxt="none",
-     main='Model with polynomial trend and amplitudes')
+     main='Model with polynomial trend and amplitudes',cex.main=1.7)
 lines(x,mu_AR0_K2_POL_esti,col=1,lwd=0.5,type="l")
 lines(x,mu_AR0_K2_POL_CI_Inf_1,col=1,lty=2)
 lines(x,mu_AR0_K2_POL_CI_Sup_1,col=1,lty=2)
 rug(x,col='grey')
 title(sub="Time", adj=0.5, line=0.5, font=2)
-title(ylab=bquote(mu*' and '* bar(mu)), line=0.5, font=2)
+title(ylab=bquote(mu*' and '* bar(mu)), line=0.5, font=2, cex.lab=1.4)
 
 ####
 p=0
@@ -316,7 +316,7 @@ lines(x[(n*p):n*(1-p)],m_AR0_K2_SIN_CI_Inf_1[(n*p):n*(1-p)],col=1,lwd=1,lty=2)
 lines(x[(n*p):n*(1-p)],m_AR0_K2_SIN_CI_Sup_1[(n*p):n*(1-p)],col=1,lty=2)
 rug(x,col='grey')
 title(sub="Time", adj=0.5, line=2, font=2)
-title(ylab=bquote(m*' and '* bar(m)), line=2, font=2)
+title(ylab=bquote(m*' and '* bar(m)), line=2, font=2, cex.lab=1.4)
 
 par(mar = c(3,4,1,0.3))
 plot(x,m_AR0_K2_POL_true,col=2,lwd=1,ylim=c(minn,maxx),type="l",xlab="",ylab="",yaxt="none")
@@ -325,7 +325,7 @@ lines(x[(n*p):n*(1-p)],m_AR0_K2_POL_CI_Inf_1[(n*p):n*(1-p)],col=1,lwd=1,lty=2)
 lines(x[(n*p):n*(1-p)],m_AR0_K2_POL_CI_Sup_1[(n*p):n*(1-p)],col=1,lty=2)
 rug(x,col='grey')
 title(sub="Time", adj=0.5, line=2, font=2)
-title(ylab=bquote(m*' and '* bar(m)), line=0.5, font=2)
+title(ylab=bquote(m*' and '* bar(m)), line=0.5, font=2, cex.lab=1.4)
 
 #####
 
@@ -336,7 +336,7 @@ lines(x[(n*p):n*(1-p)],g11_AR0_K2_SIN_CI_Inf_1[(n*p):n*(1-p)],col=1,lty=2)
 lines(x[(n*p):n*(1-p)],g11_AR0_K2_SIN_CI_Sup_1[(n*p):n*(1-p)],col=1,lty=2)
 rug(x,col='grey')
 title(sub="Time", adj=0.5, line=0.5, font=2)
-title(ylab=bquote(g[1*','*1]*' and '* bar(g)[1*','*1]), line=2, font=2)
+title(ylab=bquote(g[1*','*1]*' and '* bar(g)[1*','*1]), line=2, font=2, cex.lab=1.4)
 
 par(mar = c(3,4,1,0.3))
 plot(x,g21_AR0_K2_SIN_true,col=2,lwd=1,ylim=c(minn,maxx),type="l",xlab="",ylab="",xaxt="none",yaxt="none")
@@ -345,7 +345,7 @@ lines(x[(n*p):n*(1-p)],g21_AR0_K2_SIN_CI_Inf_1[(n*p):n*(1-p)],col=1,lty=2)
 lines(x[(n*p):n*(1-p)],g21_AR0_K2_SIN_CI_Sup_1[(n*p):n*(1-p)],col=1,lty=2)
 rug(x,col='grey')
 title(sub="Time", adj=0.5, line=0.5, font=2)
-title(ylab=bquote(g[2*','*1]*' and '* bar(g)[2*','*1]), line=0.5, font=2)
+title(ylab=bquote(g[2*','*1]*' and '* bar(g)[2*','*1]), line=0.5, font=2, cex.lab=1.4)
 
 #####
 
@@ -356,7 +356,7 @@ lines(x[(n*p):n*(1-p)],g11_AR0_K2_POL_CI_Inf_1[(n*p):n*(1-p)],col=1,lty=2)
 lines(x[(n*p):n*(1-p)],g11_AR0_K2_POL_CI_Sup_1[(n*p):n*(1-p)],col=1,lty=2)
 rug(x,col='grey')
 title(sub="Time", adj=0.5, line=0.5, font=2)
-title(ylab=bquote(g[1*','*1]*' and '* bar(g)[1*','*1]), line=0.5, font=2)
+title(ylab=bquote(g[1*','*1]*' and '* bar(g)[1*','*1]), line=0.5, font=2, cex.lab=1.4)
 
 par(mar = c(3,4,1,0.3))
 plot(x,g21_AR0_K2_POL_true,col=2,lwd=1,ylim=c(minn,maxx),type="l",xlab="",ylab="",xaxt="none",yaxt="none")
@@ -365,7 +365,7 @@ lines(x[(n*p):n*(1-p)],g21_AR0_K2_POL_CI_Inf_1[(n*p):n*(1-p)],col=1,lty=2)
 lines(x[(n*p):n*(1-p)],g21_AR0_K2_POL_CI_Sup_1[(n*p):n*(1-p)],col=1,lty=2)
 rug(x,col='grey')
 title(sub="Time", adj=0.5, line=0.5, font=2)
-title(ylab=bquote(g[2*','*1]*' and '* bar(g)[2*','*1]), line=0.5, font=2)
+title(ylab=bquote(g[2*','*1]*' and '* bar(g)[2*','*1]), line=0.5, font=2, cex.lab=1.4)
 
 #####
 
@@ -376,7 +376,7 @@ lines(x[(n*p):n*(1-p)],g12_AR0_K2_SIN_CI_Inf_1[(n*p):n*(1-p)],col=1,lty=2)
 lines(x[(n*p):n*(1-p)],g12_AR0_K2_SIN_CI_Sup_1[(n*p):n*(1-p)],col=1,lty=2)
 rug(x,col='grey')
 title(sub="Time", adj=0.5, line=2, font=2)
-title(ylab=bquote(g[1*','*2]*' and '* bar(g)[1*','*2]), line=2, font=2)
+title(ylab=bquote(g[1*','*2]*' and '* bar(g)[1*','*2]), line=2, font=2, cex.lab=1.4)
 
 par(mar = c(3,4,1,0.3))
 plot(x,g22_AR0_K2_SIN_true,col=2,lwd=1,ylim=c(minn,maxx),type="l",xlab="",ylab="",yaxt="none")
@@ -385,7 +385,7 @@ lines(x[(n*p):n*(1-p)],g22_AR0_K2_SIN_CI_Inf_1[(n*p):n*(1-p)],col=1,lty=2)
 lines(x[(n*p):n*(1-p)],g22_AR0_K2_SIN_CI_Sup_1[(n*p):n*(1-p)],col=1,lty=2)
 rug(x,col='grey')
 title(sub="Time", adj=0.5, line=2, font=2)
-title(ylab=bquote(g[2*','*2]*' and '* bar(g)[2*','*2]), line=0.5, font=2)
+title(ylab=bquote(g[2*','*2]*' and '* bar(g)[2*','*2]), line=0.5, font=2, cex.lab=1.4)
 
 ####
 
@@ -396,7 +396,7 @@ lines(x[(n*p):n*(1-p)],g12_AR0_K2_POL_CI_Inf_1[(n*p):n*(1-p)],col=1,lty=2)
 lines(x[(n*p):n*(1-p)],g12_AR0_K2_POL_CI_Sup_1[(n*p):n*(1-p)],col=1,lty=2)
 rug(x,col='grey')
 title(sub="Time", adj=0.5, line=2, font=2)
-title(ylab=bquote(g[1*','*2]*' and '* bar(g)[1*','*2]), line=0.5, font=2)
+title(ylab=bquote(g[1*','*2]*' and '* bar(g)[1*','*2]), line=0.5, font=2, cex.lab=1.4)
 
 par(mar = c(3,4,1,0.3))
 plot(x,g22_AR0_K2_POL_true,col=2,lwd=1,ylim=c(minn,maxx),type="l",xlab="",ylab="",yaxt="none")
@@ -405,7 +405,7 @@ lines(x[(n*p):n*(1-p)],g22_AR0_K2_POL_CI_Inf_1[(n*p):n*(1-p)],col=1,lty=2)
 lines(x[(n*p):n*(1-p)],g22_AR0_K2_POL_CI_Sup_1[(n*p):n*(1-p)],col=1,lty=2)
 rug(x,col='grey')
 title(sub="Time", adj=0.5, line=2, font=2)
-title(ylab=bquote(g[2*','*2]*' and '* bar(g)[2*','*2]), line=0.5, font=2)
+title(ylab=bquote(g[2*','*2]*' and '* bar(g)[2*','*2]), line=0.5, font=2, cex.lab=1.4)
 
 dev.off()
 
