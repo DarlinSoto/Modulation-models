@@ -100,7 +100,7 @@ lam_l_y_vect=matrix(lam_l_y,ncol=1,nrow=N_l_y)
 
 
 SIM=200
-PER_y=matrix(0,ncol=SIM,nrow=N_l_y)
+PER_y=PER_x=matrix(0,ncol=SIM,nrow=N_l_y)
 
 set.seed(1)
 
@@ -112,15 +112,22 @@ for(m in 1:SIM){
     x[i]=phi1*x[i-1]+phi2*x[i-2]+z[i]
   }  
   
+  PER_x[,m]=apply(lam_l_y_vect,1,periodogram,x=x,times=times_x)
+  
   y=x[index_y]
   PER_y[,m]=apply(lam_l_y_vect,1,periodogram,x=y,times=times_y)
 }
 
 PER_mean_y=apply(PER_y,1,mean)
+PER_mean_x=apply(PER_x,1,mean)
 
 #TRUE SPECTRAL DENSITY
 aux=spectral_density(ar = c(phi1,phi2), ma = numeric(), sd = sqrt(sigma2), lambda = lam_l_x_vect*dt)
 PSD=aux$PSD
+
+plot(lam_l_x_vect[1:250],PER_mean_x[1:250]/500,t='l',col='gray')
+lines(lam_l_y_vect[1:250],PER_mean_y[1:250]/300,t='l',col='azure4')
+lines(lam_l_x_vect[1:250],2*pi*PSD[1:250],col=1,lty=2)
 
 #ESTIMATED SPECTRAL DENSITY
 W_y=apply(lam_l_y_vect,1,W_fun,times_y)
@@ -135,29 +142,41 @@ f=(1:N)/(dt*N)
 
 pdf("SIM_PSD_AR2.pdf",width=12,height=4)
 
-layout(matrix(c(1,2), 1, 2, byrow = TRUE),widths=c(1,1), heights=c(1,1))
+layout(matrix(c(1,2,3), 1, 3, byrow = TRUE),widths=c(1,1), heights=c(1,1))
 
 maxx=max(P_y_hat[ind])
 minn=min(P_y_hat[ind])
 
 par(mar=c(3.3, 3.3, 1, 1))
-plot(f[ind],PSD[ind],col='red',lwd=2,t='l',ylim=c(minn,maxx),ylab='',xlab='')
-lines(f[ind],P_y_hat[ind],col=1,lwd=1)
+plot(f[ind],PER_mean_x[ind]/(2*pi*500),t='l',col='darkgreen',ylim=c(minn,maxx),ylab='',xlab='')
+lines(f[ind],PER_mean_y[ind]/(2*pi*300),t='l',col='darkblue')
+lines(f[ind],PSD[ind],col=2,lwd=1)
 abline(h=0)
 title(sub="Frequency", adj=0.5, line=2, font=2)
 title(ylab='Spectral density', line=2, font=2)
-legend("topright", legend=c(as.expression(bquote(P[epsilon])),
-                            as.expression(bquote(hat(P)[e]))),col=c("red", "black"), lty=c(1,1), cex=0.8)
-text(max(f[ind])/2,maxx,cex=1,bquote('Fit obtained without smoothing'))
+legend("topright", legend=c(as.expression(bquote(bar(I)[epsilon]/(2*pi*N[y]))),
+                            as.expression(bquote(bar(I)[e]/(2*pi*N[x]))),
+                            as.expression(bquote(P[epsilon]))),col=c('darkgreen','darkblue',2), lwd=2,lty=c(1,1), cex=1)
+text(max(f[ind])/2,maxx,cex=1.3,bquote('Periodograms'))
 
 par(mar=c(3.3, 3.3, 1, 1))
-plot(f[ind],PSD[ind],col='red',lwd=2,t='l',ylim=c(minn,maxx),ylab='',xlab='',yaxt="none")
-lines(f[ind],s_P_y_hat[ind],col=1,lwd=1)
+plot(f[ind],P_y_hat[ind],col='blue',lwd=1,t='l',ylim=c(minn,maxx),ylab='',xlab='',yaxt="none")
+lines(f[ind],PSD[ind],col=2,lwd=1)
 abline(h=0)
 title(sub="Frequency", adj=0.5, line=2, font=2)
 title(ylab='Spectral density', line=0.5, font=2)
-legend("topright", legend=c(as.expression(bquote(P[epsilon])),
-                            as.expression(bquote(tilde(P)[e]))),col=c("red", "black"), lty=c(1,1), cex=0.8)
-text(max(f[ind])/2,maxx,cex=1,bquote('Fit obtained with bandwidth=0.3'))
+legend("topright", legend=c(as.expression(bquote(hat(P)[e])),
+                            as.expression(bquote(P[epsilon]))),col=c('blue', 2),lwd=2, lty=c(1,1), cex=1)
+text(max(f[ind])/2,maxx,cex=1.3,bquote('Fit obtained without smoothing'))
+
+par(mar=c(3.3, 3.3, 1, 1))
+plot(f[ind],s_P_y_hat[ind],col=2,lwd=1,t='l',ylim=c(minn,maxx),ylab='',xlab='',yaxt="none")
+lines(f[ind],PSD[ind],col='blue',lwd=1)
+abline(h=0)
+title(sub="Frequency", adj=0.5, line=2, font=2)
+title(ylab='Spectral density', line=0.5, font=2)
+legend("topright", legend=c(as.expression(bquote(tilde(P)[e])),
+                            as.expression(bquote(P[epsilon]))),col=c('blue', 2), lwd=2,lty=c(1,1), cex=1)
+text(max(f[ind])/2,maxx,cex=1.3,bquote('Fit obtained with bandwidth=0.3'))
 
 dev.off()
